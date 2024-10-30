@@ -1,104 +1,55 @@
-# MD-Practical
-### Practical on MD for LJC Summer School: 4th September 2024 
+# MPhil in Scientific Computing - University of Cambridge
+## Atomistic Materials Modelling Course - Practical 1
 
 
-This practical is structured in two main sections. In the first section ```01_MD-Fundamentals``` you will work on a bare-bones MD code, and implement some of the key functions in order to run an MD simulation. In the second part ```02_LAMMPS-electrolyte```, you will look at a more `real-world' example, where you will set up your own simulation and run it on a HPC, and then analyse the resulting trajectory.
+### Introduction
+This practical is in ```01_MD-Fundamentals``` will let you work on a bare-bones MD code, and implement some of the key functions in order to run an MD simulation.
 
-There are solutions notebooks available for both sections of the pracitcal in their respective folders. However we _strongly_ reccommend that you do not look at these until after the practical or if you are desparately stuck. It is better to ask one of us and talk through any problems than simply copying an answer (you may also come up with much more efficient solutions!). 
+There is a solution notebook available for the pracitcal in the respective folder. However we _strongly_ reccommend that you do not look at these until after the practical or if you are desparately stuck. It is better to ask one of the demonstrators and talk through any problems than simply copying an answer (you might come up with a more efficient solutions!). 
 
-## Part 0: Setup
-The practical will be run on CSD3 which you by now are probably familiar with. You should first connect to CSD3 as usual. Then run the following code to download the practical exercises from the Github repository to activate the environment.
 
-```
-mkdir 4_Molecular_dynamics
-cd 4_Molecular_dynamics
-source ~/rds/rds-ljc-summerschool/4_Molecular_dynamics/moldyn/bin/activate
-git clone https://github.com/niamhon/MD-Practical.git
-cp /rds/project/hpc/rds-hpc-training/rds-ljc-summerschool/shared/4_Molecular_dynamics/data/* ./MD-Practical/02_LAMMPS-electrolyte/02_analysis
-```
+#### Before you start
 
-## Part 1: MD-Fundamentals
+We will run this practical on one of the cerberus clusters that you have access to.
+All software required for the completion has been installed there.
+
+Adapt the following ssh command to your needs, please distribute over the three available clusters:\
+`ssh -X USER@cerberus1/2/3.lsc.phy.private.cam.ac.uk`
+
+For the rest of the practical work within a directory under `/data/cerberus1/2/3`. For example, if you logged into cerberus2, create a directory under your username:\
+`mkdir /data/cerberus2/$USER`
+
+Change to this directory and clone the github repository of this practical:\
+`git clone https://github.com/cschran/mphil-amm-practical1.git`
+
+Once you are in the directory, execute the following command to setup the correct system environment:\
+`source setup.sh`
+
+
+### Part 1: MD-Fundamentals
 
 ### MD Simulation of Liquid Argon
 
-![Liquid argon simulation](https://github.com/niamhon/MD-Practical/blob/main/01_MD-Fundamentals/argon.jpg)
+![Liquid argon simulation](https://github.com/cschran/mphil-amm-practical1/blob/main/01_MD-Fundamentals/argon.jpg)
 
 In this section we will follow in the footsteps of Aneesur Rahman, who ran the first molecular dynamics computer simulation on liquid argon 60 years ago in 1964 [[1]](#1). Fittingly for this summer school, we will also be modelling the interactions between the Ar atoms with a Lennard Jones potential. 
 
-```cd MD-Practical/01_MD-Fundamentals```
+```cd 01_MD-Fundamentals```
 
-We have provided you with a skeleton of the molecular dynamics code in the ```MD.ipynb``` notebook.
+We have provided you with a skeleton of a molecular dynamics code in the ```MD.ipynb``` notebook.
+Juptyer notebook is a web application for creating and sharing computational documents.
+It offers a simple, streamlined, document-centric experience and has become a standard tool in the field to perform quick analysis and write code.
 
-```jupyter lab```
+You can start a notebook on cerberus and then access it on your local machine.
+In the main directory of the repository, execute `juptyer-notebook --no-browser`. This will lock up this session, so it is best to do it in a new terminal (remember to always source the setup.sh script if you open a new session!).
+
+On your local machine, you can then use ssh to tunnel into the running session (replace XXXX to match the network address shown the by jupyter notebook):\
+`ssh -N -y -L localhost:XXXX:localhost:XXXX USER@cerberus1/2/3.lsc.phy.private.cam.ac.uk`
+
+Copying the shown network address into your local browser will allow you to access the session:\
+`http://localhost:8888/?token=8d186032bbbe095b294789e863b065a546fcc15b68683c99`
 
 Work through the notebook, filling in the required code to run an MD simulation of liquid Argon.
-
-
-## Part 2: LAMMPS electrolyte
-
-![Interfacial electrolyte simulation](https://github.com/niamhon/MD-Practical/blob/main/02_LAMMPS-electrolyte/01_LAMMPS-simulation/nacl_h2o_c.jpg)
-
-Now you have got to grips with the basics of running an MD simulation, we will now consider a more complex system, which you may be interested in simulating in a research project. While in the last part, you wrote your own MD code from scratch, in practice MD simulations are run using sophisticated codes -- one of which LAMMPS -- we will be using today.
-
-The system we will look at is an electrolyte solution of NaCl in water in contact with graphene. This is an interesting interfacial system with technological relevance for example in desalination membranes.
-
-In the first part of this section we will setup a LAMMPS input file and then run a simulation on CSD3. 
-
-### Running simulation with LAMMPS
-
-```
-cd 02_LAMMPS-electrolyte/01_LAMMPS-simulation
-```
-#### Setting up the input file
-
-You have been provided with a LAMMPS input file with some key information missing. Your first task is to complete the LAMMPS input script ```system.in```, using help from the documentation at: https://docs.lammps.org/Manual.html. You can use whatever text editor you would like to adapt the input files.
-
-The section you should fix is the ```Interactions Section``` as shown:
-
-```
-# ----------------- Interactions Section -----------------
-
-bond_coeff   1           1000.0  1.0 
-angle_coeff  1         1000.0  109.47
-
-pair_coeff   1 1    XXX  YYY 
-pair_coeff   2 2    XXX  YYY 
-
-pair_coeff 4 4  XXX  YYY 
-pair_coeff 3 3  XXX YYY 
-pair_coeff 5 5  XXX YYY
-```
-
-where the Lennard-Jones parameters are missing.
-
-Unlike in the previous part, where we just had one Lennard-Jones $\sigma$ and $\epsilon$ for Argon, now since we have a more complicated system, there are different values of $\sigma$ and $\epsilon$ for the various interactions. 
-
-We are using a rigid model SPC/E for water, whose parameters you can find here: http://www.sklogwiki.org/SklogWiki/index.php/SPC/E_model_of_water, while the Na and Cl parameters can be found here: https://pubs.acs.org/doi/10.1021/ja00131a018
-
-You will have to do a bit more work to get the carbon parameters. This paper: https://pubs.acs.org/doi/10.1021/jp0268112 gives the _C-O_ paramters as $\sigma_{\mathrm{CO}} = 3.190$ Å and $\epsilon_{\mathrm{CO}} = 0.09369002$ kcal/mol. You should use the Lorentz-Berthelot mixing rules: $\epsilon_{ij} = \sqrt{\epsilon_i \epsilon_j}$ and $\sigma_{ij} = \frac{1}{2} (\sigma_i + \sigma_j)$, which gives a formula to obtain the mixed interactions between species $i$ and $j$ from their resepective interaction parameters. 
-
-_Hints:_ Make sure the units you use are consistant with the units defined in the input file. Make sure that you map the correct interactions to the correct atom types. You can see how the atom types are labelled in the `init_nvt.data` file.
-
-#### Running the simulations
-
-```
-module purge
-module load rhel8/default-icl
-module load intel-oneapi-mkl/2022.1.0/intel/mngj3ad6
-mpirun -np 1 /rds/project/hpc/rds-hpc-training/rds-ljc-summerschool/shared/4_Molecular_dynamics/lammps/src/lmp_intel_cpu_intelmpi -in system.in &
-```
-
-You can monitor the output of the simulation in the ```log.lammps``` file. 
-
-**Plot the time per step vs number of cores used in the simulation.**
-
-### Analysing simulation
-
-```cd 02_LAMMPS-electrolyte/analysis```
-
-We are now ready to analyse the trajectory you generated above. You should use the ```trajectory-analysis.ipynb``` Jupyter notebook to run the analysis.
-
-While the LAMMPS code is much more efficient than our home-made code from Part 1, chances are you still have not got a trajectory long enough to obtain converged properties for the system in the 20 minutes or so that you have run the simulation. For this reason we have supplied you with a 10 ns trajectory ```traj.dcd ``` that we generated previously which you should use for the analysis.
 
 
 ## References
