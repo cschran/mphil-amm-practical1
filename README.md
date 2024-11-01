@@ -3,7 +3,7 @@
 
 
 ### Introduction
-This practical is in ```01_MD-Fundamentals``` will let you work on a bare-bones MD code, and implement some of the key functions in order to run an MD simulation.
+This practical in ```01_MD-Fundamentals``` will let you work on a bare-bones MD code, and implement some of the key functions in order to run an MD simulation.
 
 There is a solution notebook available for the pracitcal in the respective folder. However we _strongly_ reccommend that you do not look at these until after the practical or if you are desparately stuck. It is better to ask one of the demonstrators and talk through any problems than simply copying an answer (you might come up with a more efficient solutions!). 
 
@@ -30,9 +30,9 @@ Once you are in the directory, execute the following command to setup the correc
 
 ### MD Simulation of Liquid Argon
 
-![Liquid argon simulation](https://github.com/cschran/mphil-amm-practical1/blob/main/01_MD-Fundamentals/argon.jpg)
+![Liquid argon simulation](01_MD-Fundamentals/argon.jpg)
 
-In this section we will follow in the footsteps of Aneesur Rahman, who ran the first molecular dynamics computer simulation on liquid argon 60 years ago in 1964 [[1]](#1). Fittingly for this summer school, we will also be modelling the interactions between the Ar atoms with a Lennard Jones potential. 
+In this section we will follow in the footsteps of Aneesur Rahman, who ran the first molecular dynamics computer simulation on liquid argon 60 years ago in 1964 [[1]](#1). Fittingly for this University, we will also be modelling the interactions between the Ar atoms with a Lennard-Jones potential. 
 
 ```cd 01_MD-Fundamentals```
 

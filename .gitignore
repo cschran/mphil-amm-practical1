@@ -3,3 +3,4 @@
 *.txt
 *.traj
 *.xyz
+.ipynb_checkpoints/
