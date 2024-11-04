@@ -41,7 +41,7 @@ Juptyer notebook is a web application for creating and sharing computational doc
 It offers a simple, streamlined, document-centric experience and has become a standard tool in the field to perform quick analysis and write code.
 
 You can start a notebook on cerberus and then access it on your local machine.
-In the main directory of the repository, execute `juptyer-notebook --no-browser`. This will lock up this session, so it is best to do it in a new terminal (remember to always source the setup.sh script if you open a new session!).
+In the main directory of the repository, execute `jupyter-notebook --no-browser`. This will lock up this session, so it is best to do it in a new terminal (remember to always source the setup.sh script if you open a new session!).
 
 On your local machine, you can then use ssh to tunnel into the running session (replace XXXX to match the network address shown the by jupyter notebook):\
 `ssh -N -y -L localhost:XXXX:localhost:XXXX USER@cerberus1/2/3.lsc.phy.private.cam.ac.uk`
